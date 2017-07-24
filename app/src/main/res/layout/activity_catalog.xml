@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the list of pets -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorprimary_light"
+    tools:context=".CatalogActivity">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="2dp"/>
+
+    <!-- Empty view for the list -->
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/empty_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/empty_view_title_text"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="32sp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/empty_inventory_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_title_text"
+            android:scaleType="center"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/empty_inventory"/>
+
+        <TextView
+            android:id="@+id/empty_subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_inventory_image"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            android:textSize="24sp"
+            android:text="@string/empty_view_subtitle_text"
+            android:textColor="@color/colorPrimaryDark"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/empty_inventory"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="+"/>
+</RelativeLayout>

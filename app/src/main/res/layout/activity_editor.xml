@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for the editor -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorprimary_light"
+    tools:context=".EditorActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/edit_image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/no_image" />
+
+        <LinearLayout
+            style="@style/styleEditorHorizontalLayout"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="NAME:" />
+
+            <EditText
+                android:id="@+id/edit_name"
+                style="@style/styleEditorAttribute"
+                android:hint="Enter product name" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/styleEditorHorizontalLayout">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="DESCRIPTION:" />
+
+            <EditText
+                android:id="@+id/edit_description"
+                style="@style/styleEditorAttribute"
+                android:hint="Enter product description" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/styleEditorHorizontalLayout">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="PRICE:" />
+
+            <EditText
+                android:id="@+id/edit_price"
+                style="@style/styleEditorAttribute"
+                android:hint="Enter selling price" />
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/styleEditorHorizontalLayout">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="SUPPLIER:" />
+
+            <EditText
+                android:id="@+id/edit_supplier"
+                style="@style/styleEditorAttribute"
+                android:hint="Enter Supplier Name" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/styleEditorHorizontalLayout">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="Email:" />
+
+            <EditText
+                android:id="@+id/edit_email"
+                style="@style/styleEditorAttribute"
+                android:hint="Enter supplier email address" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/styleEditorHorizontalLayout"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="IN STOCK:" />
+
+            <TextView
+                android:id="@+id/edit_stockholding"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingLeft="10dp"
+                android:text="0"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/edit_stock_minus_button"
+                style="@style/styleEditorButton"
+                android:text="-"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/edit_stock_change"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="Units" />
+
+            <Button
+                android:id="@+id/edit_stock_plus_button"
+                style="@style/styleEditorButton"
+                android:text="+"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/styleEditorHorizontalLayout"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                style="@style/styleEditorlabel"
+                android:text="ORDER QTY:" />
+
+            <EditText
+                android:id="@+id/edit_order_qty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="Enter qty to order" />
+
+            <Button
+                android:id="@+id/edit_order_button"
+                style="@style/styleEditorButton"
+                android:text="Place Order" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_delete_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text = "DELETE PRODUCT"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorIcons"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</ScrollView>
