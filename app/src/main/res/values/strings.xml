@@ -59,4 +59,27 @@
 
     <!-- Dialog message asking the user to confirm deleting all product entries [CHAR LIMIT=NONE] -->
     <string name="delete_all_dialog_msg">Are you sure you want to delete all products from the database?</string>
+
+    <!-- Toast message if name EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_name_toast">Please enter a product name</string>
+
+    <!-- Toast message if description EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_description_toast">Please enter a product description</string>
+
+    <!-- Toast message if price EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_price_toast">Please enter a price</string>
+
+    <!-- Toast message if stock EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_stock_toast">Please enter a stock quantity</string>
+
+    <!-- Toast message if supplier EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_supplier_toast">Please enter a supplier name</string>
+
+    <!-- Toast message if email EditText is left blank [CHAR LIMIT=NONE] -->
+    <string name="no_email_toast">Please enter a supplier email address</string>
+
+    <!-- Toast message if no product image has been assigned [CHAR LIMIT=NONE] -->
+    <string name="no_image_toast">Please select an image</string>
+
+
 </resources>

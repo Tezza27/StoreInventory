@@ -158,9 +158,9 @@ public class ProductProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a valid price");
         }
 
-        // Check that the stock level is not null or negative
-        Integer stock = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_STOCK);
-        if (stock== null|| stock<0) {
+        // Check that the price is not null
+        Integer stock = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if (stock==null || stock<0) {
             throw new IllegalArgumentException("Product requires a valid stock quantity");
         }
 

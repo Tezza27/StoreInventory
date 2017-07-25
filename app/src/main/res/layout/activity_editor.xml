@@ -56,9 +56,9 @@
             <EditText
                 android:id="@+id/edit_price"
                 style="@style/styleEditorAttribute"
-                android:hint="Enter selling price" />
+                android:hint="Enter selling price"
+                android:inputType="numberDecimal"/>
         </LinearLayout>
-
 
         <LinearLayout style="@style/styleEditorHorizontalLayout">
 
@@ -81,7 +81,8 @@
             <EditText
                 android:id="@+id/edit_email"
                 style="@style/styleEditorAttribute"
-                android:hint="Enter supplier email address" />
+                android:hint="Enter supplier email address"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
         <LinearLayout style="@style/styleEditorHorizontalLayout"

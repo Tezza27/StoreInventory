@@ -116,7 +116,6 @@ public class CatalogActivity extends AppCompatActivity implements
         values.put(ProductEntry.COLUMN_PRODUCT_STOCK, stock);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER, supplier);
         values.put(ProductEntry.COLUMN_SUPPLIER_EMAIL, email);
-        values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageId);
 
         Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
                 "://" + getResources().getResourcePackageName(imageId)

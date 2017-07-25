@@ -3,6 +3,7 @@ package com.example.android.storeinventory;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -34,6 +35,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 /**
  * Allows user to create a new product or edit an existing one.
  */
@@ -49,6 +53,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     /** Content URI for the existing product (null if it's a new product) */
     private Uri mCurrentProductUri;
+
+    /** URI for the product image */
+    private Uri mImageUri;
 
     /** EditText field to enter the product's name */
     private EditText mNameEditText;
@@ -123,6 +130,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
             // (It doesn't make sense to delete a product that hasn't been created yet.)
             invalidateOptionsMenu();
+
+            //mStockChangeEditText.setVisibility(View.GONE);
+
+
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.editor_activity_title_edit_product));
@@ -159,6 +170,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mEmailEditText.setOnTouchListener(mTouchListener);
         mStockTextView.setOnTouchListener(mTouchListener);
         mStockChangeEditText.setOnTouchListener(mTouchListener);
+        mDeleteProductButton.setOnTouchListener(mTouchListener);
 
         // Set a clickListener on minus button
         mReduceStockButton.setOnClickListener(new View.OnClickListener() {
@@ -166,14 +178,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 String currentProduct =  mNameEditText.getText().toString();
                 String toastMessage = null;
-                int currentStock = Integer.parseInt(mStockTextView.getText().toString());
+                int currentStock = parseInt(mStockTextView.getText().toString());
                 int changeStock;
                 int newStockholding;
 
                 if (mStockChangeEditText.getText().toString().trim().length() == 0) {
                     newStockholding = currentStock - 1;
                 } else {
-                    changeStock = Integer.parseInt(mStockChangeEditText.getText().toString());
+                    changeStock = parseInt(mStockChangeEditText.getText().toString());
                     newStockholding = currentStock - changeStock;
                 }
 
@@ -198,14 +210,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 String currentProduct =  mNameEditText.getText().toString();
                 String toastMessage = null;
-                int currentStock = Integer.parseInt(mStockTextView.getText().toString());
+                int currentStock = parseInt(mStockTextView.getText().toString());
                 int changeStock;
                 int newStockholding;
 
                 if (mStockChangeEditText.getText().toString().trim().length() == 0) {
                     newStockholding = currentStock + 1;
                 } else {
-                    changeStock = Integer.parseInt(mStockChangeEditText.getText().toString());
+                    changeStock = parseInt(mStockChangeEditText.getText().toString());
                     newStockholding = currentStock + changeStock;
                 }
 
@@ -258,7 +270,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mImageImageView.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-                                              openImageSelector();
+                openImageSelector();
                                           }
     });
 }
@@ -266,26 +278,54 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /**
      * Get user input from editor and save product into database.
      */
-    private void saveProduct() {
+    private boolean saveProduct() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
         String descriptionString = mDescriptionEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        String stockString =  mStockTextView.getText().toString().trim();
         String supplierString = mSupplierEditText.getText().toString().trim();
         String emailString = mEmailEditText.getText().toString().trim();
-        String stockString =  mStockTextView.getText().toString().trim();
+
 
         // Check if this is supposed to be a new product
         // and check if all the fields in the editor are blank
-        if (mCurrentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
-                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(supplierString) &&
-                TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(emailString)&&
-                TextUtils.isEmpty(stockString)){
+        if (mCurrentProductUri == null && mImageUri == null &&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) && TextUtils.isEmpty(priceString) &&
+                TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(emailString)) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
-            return;
+            return true;
+        } else if (TextUtils.isEmpty(nameString)) {
+            Toast.makeText(this, R.string.no_name_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(descriptionString)) {
+            Toast.makeText(this, R.string.no_description_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (TextUtils.isEmpty(priceString) || parseDouble(priceString) <= 0) {
+            Toast.makeText(this, R.string.no_price_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(stockString) || parseInt(stockString) < 0) {
+            Toast.makeText(this, R.string.no_stock_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(supplierString)) {
+            Toast.makeText(this, R.string.no_supplier_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(emailString)) {
+            Toast.makeText(this, R.string.no_email_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (mImageUri == null) {
+            Toast.makeText(this, R.string.no_image_toast,
+                    Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         // Create a ContentValues object where column names are the keys,
@@ -294,9 +334,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(ProductEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, priceString);
+        values.put(ProductEntry.COLUMN_PRODUCT_STOCK, stockString);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER, supplierString);
         values.put(ProductEntry.COLUMN_SUPPLIER_EMAIL, emailString);
-        values.put(ProductEntry.COLUMN_PRODUCT_STOCK, stockString);
+
+        if (mImageUri == null) {
+            mImageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                    "://" + getResources().getResourcePackageName(R.drawable.no_image)
+                    + '/' + getResources().getResourceTypeName(R.drawable.no_image) + '/' + getResources().getResourceEntryName(R.drawable.no_image));
+        }
+        values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, mImageUri.toString());
 
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null or not
         if (mCurrentProductUri == null) {
@@ -330,8 +377,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_update_product_successful),
                         Toast.LENGTH_SHORT).show();
+
             }
         }
+
+        return true;
     }
 
     @Override
@@ -611,7 +661,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // provided to this method as a parameter.  Pull that uri using "resultData.getData()"
 
             if (resultData != null) {
-                Uri mImageUri;
                 mImageUri = resultData.getData();
                 Log.i(LOG_TAG, "Uri: " + mImageUri.toString());
 
