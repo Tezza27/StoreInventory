@@ -2,10 +2,12 @@ package com.example.android.storeinventory;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.storeinventory.data.ProductContract.ProductEntry;
@@ -58,21 +60,25 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.list_product_name);
         TextView priceTextView = (TextView) view.findViewById(R.id.list_product_price);
         TextView stockTextView = (TextView) view.findViewById(R.id.list_product_stock);
+        ImageView imageImageView = (ImageView) view.findViewById(R.id.list_product_image);
 
         // Find the columns of product attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
         int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
         int stockColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_STOCK);
+        int imageColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_IMAGE);
 
         // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
         String productPrice = cursor.getString(priceColumnIndex);
         String productStock = cursor.getString(stockColumnIndex);
+        String productImage = cursor.getString(imageColumnIndex);
 
 
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
         priceTextView.setText(productPrice);
         stockTextView.setText(productStock);
+        imageImageView.setImageURI(Uri.parse(productImage));
     }
 }

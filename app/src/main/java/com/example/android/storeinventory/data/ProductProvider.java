@@ -159,7 +159,7 @@ public class ProductProvider extends ContentProvider {
         }
 
         // Check that the price is not null
-        Integer stock = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        Integer stock = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_STOCK);
         if (stock==null || stock<0) {
             throw new IllegalArgumentException("Product requires a valid stock quantity");
         }
