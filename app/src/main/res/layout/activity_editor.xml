@@ -51,7 +51,7 @@
 
             <TextView
                 style="@style/styleEditorlabel"
-                android:text="PRICE:" />
+                android:text="PRICE:           £" />
 
             <EditText
                 android:id="@+id/edit_price"
@@ -112,7 +112,7 @@
                 android:id="@+id/edit_stock_change"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:hint="Units" />
 
@@ -128,6 +128,7 @@
             android:layout_marginTop="8dp">
 
             <TextView
+                android:id="@+id/edit_order_label"
                 style="@style/styleEditorlabel"
                 android:text="ORDER QTY:" />
 
@@ -143,15 +144,5 @@
                 style="@style/styleEditorButton"
                 android:text="Place Order" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/edit_delete_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text = "DELETE PRODUCT"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorIcons"
-            android:textStyle="bold"/>
     </LinearLayout>
 </ScrollView>

@@ -48,55 +48,84 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     // The request code to store image from the Gallery
     private static final int PICK_IMAGE_REQUEST = 0;
 
-    /** Identifier for the product data loader */
+    /**
+     * Identifier for the product data loader
+     */
     private static final int EXISTING_PRODUCT_LOADER = 0;
 
-    /** Content URI for the existing product (null if it's a new product) */
+    /**
+     * Content URI for the existing product (null if it's a new product)
+     */
     private Uri mCurrentProductUri;
 
-    /** URI for the product image */
+    /**
+     * URI for the product image
+     */
     private Uri mImageUri;
 
-    /** EditText field to enter the product's name */
+    /**
+     * EditText field to enter the product's name
+     */
     private EditText mNameEditText;
 
-    /** EditText field to enter the product's description */
+    /**
+     * EditText field to enter the product's description
+     */
     private EditText mDescriptionEditText;
 
-    /** ImageView to enter the product's image uri */
+    /**
+     * ImageView to enter the product's image uri
+     */
     private ImageView mImageImageView;
 
-    /** EditText field to enter the product's price */
+    /**
+     * EditText field to enter the product's price
+     */
     private EditText mPriceEditText;
 
-     /** EditText field to enter the product's current stock quantity */
+    /**
+     * EditText field to enter the product's current stock quantity
+     */
     private TextView mStockTextView;
 
-    /** EditText field to enter the change in product's stock quantity */
+    /**
+     * EditText field to enter the change in product's stock quantity
+     */
     private EditText mStockChangeEditText;
 
-    /** EditText field to enter the product's supplier */
+    /**
+     * EditText field to enter the product's supplier
+     */
     private EditText mSupplierEditText;
 
-    /** EditText field to enter the supplier's email address */
+    /**
+     * EditText field to enter the supplier's email address
+     */
     private EditText mEmailEditText;
 
-    /** EditText field to enter the supplier's email address */
+    /**
+     * EditText field to enter the supplier's email address
+     */
     private EditText mOrderQtyEditText;
 
-    /** Button to reduce stock holding */
+    /**
+     * Button to reduce stock holding
+     */
     private Button mReduceStockButton;
 
-    /** Button to increase stock holding */
+    /**
+     * Button to increase stock holding
+     */
     private Button mIncreaseStockButton;
 
-    /** Button to send order by email */
+    /**
+     * Button to send order by email
+     */
     private Button mPlaceOrderButton;
 
-    /** Button to delete product */
-    private Button mDeleteProductButton;
-
-    /** Boolean flag that keeps track of whether the product has been edited (true) or not (false) */
+    /**
+     * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
+     */
     private boolean mProductHasChanged = false;
 
     /**
@@ -131,9 +160,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // (It doesn't make sense to delete a product that hasn't been created yet.)
             invalidateOptionsMenu();
 
-            //mStockChangeEditText.setVisibility(View.GONE);
-
-
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.editor_activity_title_edit_product));
@@ -156,7 +182,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mReduceStockButton = (Button) findViewById(R.id.edit_stock_minus_button);
         mIncreaseStockButton = (Button) findViewById(R.id.edit_stock_plus_button);
         mPlaceOrderButton = (Button) findViewById(R.id.edit_order_button);
-        mDeleteProductButton = (Button) findViewById(R.id.edit_delete_button);
 
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -170,13 +195,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mEmailEditText.setOnTouchListener(mTouchListener);
         mStockTextView.setOnTouchListener(mTouchListener);
         mStockChangeEditText.setOnTouchListener(mTouchListener);
-        mDeleteProductButton.setOnTouchListener(mTouchListener);
 
         // Set a clickListener on minus button
         mReduceStockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentProduct =  mNameEditText.getText().toString();
+                String currentProduct = mNameEditText.getText().toString();
                 String toastMessage = null;
                 int currentStock = parseInt(mStockTextView.getText().toString());
                 int changeStock;
@@ -192,7 +216,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (newStockholding == 0) {
                     toastMessage = "You are out of stock of " + currentProduct + ".  Place an order";
                     mStockTextView.setText(String.valueOf(newStockholding));
-                } else if (newStockholding >0) {
+                } else if (newStockholding > 0) {
                     toastMessage = "Stock of " + currentProduct + " has reduced from " + currentStock + " to " + newStockholding;
                     mStockTextView.setText(String.valueOf(newStockholding));
                 } else {
@@ -201,15 +225,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
                 Toast.makeText(view.getContext(), toastMessage, Toast.LENGTH_LONG).show();
                 mStockChangeEditText.setText((""));
-                }
+            }
         });
 
         // Set a clickListener on plus button
         mIncreaseStockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentProduct =  mNameEditText.getText().toString();
-                String toastMessage = null;
+                String currentProduct = mNameEditText.getText().toString();
                 int currentStock = parseInt(mStockTextView.getText().toString());
                 int changeStock;
                 int newStockholding;
@@ -221,8 +244,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     newStockholding = currentStock + changeStock;
                 }
 
-                    mStockTextView.setText(String.valueOf(newStockholding));
-                    toastMessage = "Your stock of " + currentProduct + " has increased from " + currentStock + " to " + newStockholding;
+                mStockTextView.setText(String.valueOf(newStockholding));
+                String toastMessage = "Your stock of " + currentProduct + " has increased from " + currentStock + " to " + newStockholding;
 
                 Toast.makeText(view.getContext(), toastMessage, Toast.LENGTH_LONG).show();
                 mStockChangeEditText.setText((""));
@@ -250,7 +273,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                         startActivity(intent);
                     }
 
-                   } else {
+                } else {
                     String toastMessage = "Order quantity required";
                     Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 }
@@ -258,22 +281,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        // Set a clickListener on delete button
-        mDeleteProductButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Pop up confirmation dialog for deletion
-                showDeleteConfirmationDialog();
-            }
-        });
 
         mImageImageView.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 openImageSelector();
-                                          }
-    });
-}
+            }
+        });
+    }
 
     /**
      * Get user input from editor and save product into database.
@@ -284,7 +299,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = mNameEditText.getText().toString().trim();
         String descriptionString = mDescriptionEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
-        String stockString =  mStockTextView.getText().toString().trim();
+        String stockString = mStockTextView.getText().toString().trim();
         String supplierString = mSupplierEditText.getText().toString().trim();
         String emailString = mEmailEditText.getText().toString().trim();
 
@@ -413,10 +428,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save product to database
-                saveProduct();
-                // Exit activity
-                finish();
+                // Save product to database and exit activity - only if the required fields are filled
+                if (saveProduct()) finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -534,7 +547,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mPriceEditText.setText(Double.toString(price));
             mSupplierEditText.setText(supplier);
             mEmailEditText.setText(email);
-            mStockTextView.setText(stock);
+            mStockTextView.setText(String.valueOf(stock));
+            mImageUri = Uri.parse(image);
+            mImageImageView.setImageURI(mImageUri);
         }
     }
 
@@ -546,8 +561,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPriceEditText.setText("");
         mSupplierEditText.setText("");
         mEmailEditText.setText("");
-        mStockTextView.setText(0);
-        mStockChangeEditText.setText("1");
+        mStockTextView.setText(String.valueOf(String.valueOf(0)));
+        mImageImageView.setImageResource(R.drawable.no_image);
     }
 
     /**
@@ -560,7 +575,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_msg);
         builder.setPositiveButton(R.string.discard, discardButtonClickListener);
@@ -584,7 +599,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {

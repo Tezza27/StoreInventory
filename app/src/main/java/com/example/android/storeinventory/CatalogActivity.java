@@ -30,7 +30,6 @@ import com.example.android.storeinventory.data.ProductContract.ProductEntry;
 public class CatalogActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    //**********private ProductDbHelper mDbHelper;
     /**
      * Identifier for the product data loader
      */
@@ -55,9 +54,6 @@ public class CatalogActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-
-        //**************mDbHelper = new ProductDbHelper(this);
-
 
         // Find the ListView which will be populated with the product data
         ListView productListView = (ListView) findViewById(R.id.list);
@@ -102,7 +98,8 @@ public class CatalogActivity extends AppCompatActivity implements
         insertProduct("King Crab", "Mens Novelty Red King Crab Fancy Dress Costume", 23.49, 2, "Hamilton's party Supplies", "terryrees@hotmail.com", R.drawable.king_crab);
         insertProduct("baby Dragon", "baby Dragon Novelty Blue Fancy Dress Costume", 14.99, 3, "Hamilton's party Supplies", "terryrees@hotmail.com", R.drawable.baby_dragon);
         insertProduct("Gorilla Carry Me", "Mens Carry Me Novelty Ride On Gorilla Fancy Dress Costume", 29.99, 4, "Terry's Treats", "terryrees@hotmail.com", R.drawable.gorilla_carryme);
-        }
+    }
+
     /**
      * Helper method to insert hardcoded product data into the database. For debugging purposes only.
      */
@@ -119,7 +116,7 @@ public class CatalogActivity extends AppCompatActivity implements
 
         Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
                 "://" + getResources().getResourcePackageName(imageId)
-                + '/' + getResources().getResourceTypeName(imageId) + '/' + getResources().getResourceEntryName(imageId) );
+                + '/' + getResources().getResourceTypeName(imageId) + '/' + getResources().getResourceEntryName(imageId));
 
         values.put(ProductEntry.COLUMN_PRODUCT_IMAGE, imageUri.toString());
 
@@ -152,15 +149,15 @@ public class CatalogActivity extends AppCompatActivity implements
         builder.setMessage(R.string.delete_all_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
+                // User clicked the "Delete" button, to delete the product.
                 int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
-                Log.v("CatalogActivity", rowsDeleted + " rows deleted from books database");
+                Log.v("CatalogActivity", rowsDeleted + " rows deleted from product database");
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }

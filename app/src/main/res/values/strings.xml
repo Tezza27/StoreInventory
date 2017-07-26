@@ -81,5 +81,4 @@
     <!-- Toast message if no product image has been assigned [CHAR LIMIT=NONE] -->
     <string name="no_image_toast">Please select an image</string>
 
-
 </resources>

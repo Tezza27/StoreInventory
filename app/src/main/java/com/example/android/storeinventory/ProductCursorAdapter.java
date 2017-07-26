@@ -1,14 +1,18 @@
 package com.example.android.storeinventory;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.support.v4.widget.CursorAdapter;
 
 import com.example.android.storeinventory.data.ProductContract.ProductEntry;
 
@@ -61,8 +65,10 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView priceTextView = (TextView) view.findViewById(R.id.list_product_price);
         TextView stockTextView = (TextView) view.findViewById(R.id.list_product_stock);
         ImageView imageImageView = (ImageView) view.findViewById(R.id.list_product_image);
+        Button saleButton = (Button) view.findViewById(R.id.list_sale_button);
 
         // Find the columns of product attributes that we're interested in
+        int idColumnIndex = cursor.getColumnIndex(ProductEntry._ID);
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
         int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
         int stockColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_STOCK);
@@ -71,14 +77,38 @@ public class ProductCursorAdapter extends CursorAdapter {
         // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
         String productPrice = cursor.getString(priceColumnIndex);
-        String productStock = cursor.getString(stockColumnIndex);
+        final int productStock = cursor.getInt(stockColumnIndex);
         String productImage = cursor.getString(imageColumnIndex);
 
 
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
         priceTextView.setText(productPrice);
-        stockTextView.setText(productStock);
+        stockTextView.setText(String.valueOf(productStock));
         imageImageView.setImageURI(Uri.parse(productImage));
+        final int productId = cursor.getInt(idColumnIndex);
+
+        // Set a clickListener on sale button
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, productId);
+                reduceProductQuantity(view, productStock, currentProductUri);
+            }
+        });
+    }
+
+    private void reduceProductQuantity(View view, int productStock, Uri uri) {
+
+        if (productStock > 0) {
+            productStock--;
+
+            ContentValues values = new ContentValues();
+            values.put(ProductEntry.COLUMN_PRODUCT_STOCK, productStock);
+            mContext.getContentResolver().update(uri, values, null, null);
+        } else {
+            Toast.makeText(view.getContext(), "This product has no stock", Toast.LENGTH_SHORT).show();
+        }
     }
 }
